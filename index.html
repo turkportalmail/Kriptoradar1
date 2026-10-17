@@ -83,10 +83,20 @@ async function loadSignals(){
   const warning=age!==null&&age>2?'<p class="warn">Dikkat: Son veri 2 saatten eski.</p>':"";
   const cards=rows.slice(0,60).map(item=>{
    const price=Number(item.price),change=Number(item.change24h),volume=Number(item.volume24hUsd);
-   const cmc=item.cmc&&item.cmc.match==="symbol_only_unverified"?
-     '<div><small>CoinMarketCap (sembol eşleşmesi, kimlik doğrulanmadı): '+safe(item.cmc.name||"—")+
-     ' · Piyasa değeri: '+(item.cmc.marketCapUsd!==null&&Number.isFinite(Number(item.cmc.marketCapUsd))?Math.round(Number(item.cmc.marketCapUsd)).toLocaleString("en-US")+" USD":"—")+'</small></div>':"";
-   return '<div style="padding:12px 0;border-bottom:1px solid #314159"><div class="row"><strong>'+safe(item.symbol)+'</strong><span class="pill">'+safe(item.exchange)+'</span></div><div class="'+(item.status==="Koşullu kırılım adayı"?"green":"muted")+'">'+safe(item.status)+'</div><small>Fiyat: '+(Number.isFinite(price)?price.toPrecision(6):"—")+' USD · 24s: %'+(Number.isFinite(change)?change.toFixed(2):"—")+' · Hacim: '+(Number.isFinite(volume)?Math.round(volume).toLocaleString("en-US"):"—")+' USD</small><div><small>'+safe(item.reason||"")+'</small></div>'+cmc+'</div>';
+   const breakout=item.status==="Koşullu kırılım adayı";
+   const title=breakout?"Dikkat çekiyor":"Takip et";
+   const explain=breakout?"Fiyat ve işlem hareketinde belirgin artış var. Yine de yükseliş kesin değil.":"Bu coin yoğun işlem görüyor ancak güçlü yükseliş işareti henüz doğrulanmadı.";
+   const displayChange=Number.isFinite(change)?(change>0?"+":"")+change.toFixed(2)+"%":"Bilinmiyor";
+   const displayPrice=Number.isFinite(price)?price.toPrecision(6)+" USD":"Bilinmiyor";
+   const detail='24 saatlik işlem: '+(Number.isFinite(volume)?Math.round(volume).toLocaleString("tr-TR")+" USD":"Bilinmiyor")+
+     (item.cmc&&item.cmc.match==="symbol_only_unverified"?' · CoinMarketCap eşleşmesi: '+safe(item.cmc.name||"—")+' (kesin doğrulanmadı)':"");
+   return '<div style="padding:15px 0;border-bottom:1px solid #314159">'+
+     '<div class="row"><strong>'+safe(item.baseAsset||item.symbol)+'</strong><span class="pill">'+safe(item.exchange)+'</span></div>'+
+     '<div class="'+(breakout?"green":"muted")+'"><strong>'+title+'</strong></div>'+
+     '<div style="margin:8px 0">Fiyat: <strong>'+displayPrice+'</strong> · Son 24 saat: <strong>'+displayChange+'</strong></div>'+
+     '<div style="margin-bottom:8px">'+explain+'</div>'+
+     '<small>Karar: '+(breakout?"Yakından izle. Alım garantisi yok.":"Şimdilik izle. Alım önerisi değil.")+'</small>'+
+     '<details style="margin-top:9px"><summary style="cursor:pointer">Ayrıntıları göster</summary><small>'+detail+'</small></details></div>';
   }).join("");
   el.innerHTML=warning+(cards||"Henüz uygun coin bulunmadı veya ilk tarama bekleniyor.");
  }catch(e){el.textContent="Sinyal verileri alınamadı. İnternet bağlantını kontrol edip yeniden dene.";}
