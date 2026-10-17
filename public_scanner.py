@@ -35,11 +35,16 @@ def scan_binance():
      volumes=[float(k[7]) for k in closed]
      avg=statistics.mean(volumes[-21:-1])
      ratio=volumes[-1]/avg if avg>0 else 0
-     last=float(closed[-1][4]);high=max(float(k[2]) for k in closed[-8:-1])
+     last=float(closed[-1][4]);high=max(float(k[2]) for k in closed[-8:-1]);low=min(float(k[3]) for k in closed[-8:-1])
      item["volumeRatio"]=round(ratio,2)
      if last>high*1.003 and ratio>=2.5 and 2<item["change24h"]<12:
       item["status"]="Koşullu kırılım adayı"
+      item["alertType"]="AL"
       item["reason"]="Saatlik mum kırılımı ve hacim artışı; AL garantisi değildir"
+     elif last<low*0.997 and ratio>=2.5 and -12<c<0:
+      item["status"]="Düşüş riski uyarısı"
+      item["alertType"]="SAT"
+      item["reason"]="Saatlik mum aşağı kırıldı ve hacim arttı; SAT emri değildir"
     except Exception as exc:print("Binance candle",item["symbol"],repr(exc)[:120])
    return items
   except Exception as exc:errors.append(host+" "+repr(exc)[:180])
