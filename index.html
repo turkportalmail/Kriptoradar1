@@ -8,46 +8,91 @@
 <section id="backup" class="hidden"><h2>Veri yedekleme</h2><div class="card"><p>İşlemler yalnızca bu cihazdaki tarayıcıda saklanır. Telefonu değiştirmeden veya tarayıcı verilerini silmeden önce yedek al.</p><button class="primary" id="export">JSON yedeği indir</button><br><br><label>Yedeği geri yükle</label><input type="file" id="import" accept="application/json"><button id="clear" style="color:#ff8891;background:none;border:0;margin-top:20px">Tüm işlemleri sil</button></div></section>
 <nav><button data-tab="portfolio" class="active">◫<br>Portföy</button><button data-tab="trade">＋<br>İşlem</button><button data-tab="signals">◎<br>Sinyaller</button><button data-tab="backup">⇩<br>Yedek</button></nav>
 <script>
-const KEY="kripto-radar-trades-v1";let trades;try{trades=JSON.parse(localStorage.getItem(KEY)||"[]");if(!Array.isArray(trades))trades=[]}catch{trades=[]}
+
+const KEY="kripto-radar-trades-v1";
+let trades;
+try {trades=JSON.parse(localStorage.getItem(KEY)||"[]");if(!Array.isArray(trades))trades=[];}catch(e){trades=[];}
+const byId=id=>document.getElementById(id);
 const money=n=>Number(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:4})+" $";
-function save(){localStorage.setItem(KEY,JSON.stringify(trades));render()}
-function calc(){let h={},realized=0;for(let t of trades){let k=t.exchange+":"+t.symbol;let p=h[k]||(h[k]={qty:0,cost:0});let gross=t.quantity*t.price;if(t.side==="BUY"){p.qty+=t.quantity;p.cost+=gross+t.fee}else{if(t.quantity>p.qty+1e-9)throw Error("Satış adedi mevcut bakiyeyi aşıyor: "+k);let avg=p.qty?p.cost/p.qty:0;realized+=gross-t.fee-t.quantity*avg;p.qty-=t.quantity;p.cost-=t.quantity*avg;if(p.qty<1e-9){p.qty=0;p.cost=0}}}return {h,realized}}
-function render(){let d=calc(),rows=Object.entries(d.h).filter(([k,p])=>p.qty>0);document.getElementById("total").textContent=money(rows.reduce((s,[k,p])=>s+p.cost,0));document.getElementById("realized").textContent=money(d.realized);document.getElementById("realized").className=d.realized>=0?"green":"red";document.getElementById("holdings").innerHTML=rows.length?rows.map(([k,p])=>'<div class="row"><div><b>'+k.replace(/&/g,"&amp;").replace(/</g,"&lt;")+'</b><br><small>'+p.qty.toLocaleString("en-US",{maximumFractionDigits:8})+' adet · Ort. '+money(p.cost/p.qty)+'</small></div><b>'+money(p.cost)+'</b></div>').join(""):'Henüz açık pozisyon yok.'}
-const escapeText=v=>String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-async function loadSignals(){
- const el=document.getElementById("signalList"),btn=document.getElementById("refreshSignals");btn.disabled=true;
- try{
-  const r=await fetch("./signals.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);
-  const d=await r.json();const date=d.updatedAt?new Date(d.updatedAt):null;
-  document.getElementById("scanTime").textContent=date&&!isNaN(date)?date.toLocaleString("tr-TR"):"İlk tarama bekleniyor";
-  const age=date?(Date.now()-date.getTime())/3600000:null;
-  document.getElementById("scanSources").textContent=Object.entries(d.sources||{}).map(([k,v])=>k+": "+(v.ok?"✓":"Hata")).join(" · ")||"Bekleniyor";
-  const rows=Array.isArray(d.signals)?d.signals:[];
-  const stale=age!==null&&age>2;
-  el.innerHTML=(stale?'<p class="warn">Dikkat: Son veri 2 saatten eski. Yeni tarama bekleniyor.</p>':"")+
-   (rows.length?rows.slice(0,30).map(x=>'<div style="padding:12px 0;border-bottom:1px solid #314159"><div class="row"><strong>'+escapeText(x.symbol)+'</strong><span class="pill">'+escapeText(x.exchange)+'</span></div><div class="'+(x.status==="Koşullu kırılım adayı"?"green":"muted")+'">'+escapeText(x.status)+'</div><small>Fiyat: document.querySelectorAll("section").forEach(s=>s.classList.toggle("hidden",s.id!==b.dataset.tab));document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x===b))});
-document.getElementById("tradeForm").onsubmit=e=>{e.preventDefault();let t={side:side.value,exchange:exchange.value,symbol:symbol.value.trim().toUpperCase(),quantity:Number(quantity.value),price:Number(price.value),fee:Number(fee.value),date:new Date().toISOString()};if(!/^[A-Z0-9_-]{2,20}$/.test(t.symbol)||!(t.quantity>0)||!(t.price>0)||t.fee<0)return alert("Geçerli işlem bilgilerini gir.");try{let old=trades;trades=[...trades,t];calc();save();e.target.reset();fee.value="0";alert("İşlem kaydedildi.")}catch(err){trades=trades.slice(0,-1);alert(err.message)}};
-document.getElementById("export").onclick=()=>{let blob=new Blob([JSON.stringify({version:1,trades},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="kripto-radar-yedek.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
-document.getElementById("import").onchange=async e=>{try{let data=JSON.parse(await e.target.files[0].text());if(!Array.isArray(data.trades)||!confirm("Mevcut kayıtların yerine yedek yüklensin mi?"))return;let old=trades;trades=data.trades;try{calc();save();alert("Yedek yüklendi.")}catch(err){trades=old;alert(err.message)}}catch{alert("Yedek dosyası okunamadı.")}};
-document.getElementById("clear").onclick=()=>{if(confirm("Tüm işlem kayıtlarını kalıcı olarak silmek istiyor musun?")){trades=[];save()}};
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(console.warn));render();
-</script></body></html>+Number(x.price).toPrecision(6)+' · 24s: %'+Number(x.change24h).toFixed(2)+' · Hacim: document.querySelectorAll("section").forEach(s=>s.classList.toggle("hidden",s.id!==b.dataset.tab));document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x===b))});
-document.getElementById("tradeForm").onsubmit=e=>{e.preventDefault();let t={side:side.value,exchange:exchange.value,symbol:symbol.value.trim().toUpperCase(),quantity:Number(quantity.value),price:Number(price.value),fee:Number(fee.value),date:new Date().toISOString()};if(!/^[A-Z0-9_-]{2,20}$/.test(t.symbol)||!(t.quantity>0)||!(t.price>0)||t.fee<0)return alert("Geçerli işlem bilgilerini gir.");try{let old=trades;trades=[...trades,t];calc();save();e.target.reset();fee.value="0";alert("İşlem kaydedildi.")}catch(err){trades=trades.slice(0,-1);alert(err.message)}};
-document.getElementById("export").onclick=()=>{let blob=new Blob([JSON.stringify({version:1,trades},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="kripto-radar-yedek.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
-document.getElementById("import").onchange=async e=>{try{let data=JSON.parse(await e.target.files[0].text());if(!Array.isArray(data.trades)||!confirm("Mevcut kayıtların yerine yedek yüklensin mi?"))return;let old=trades;trades=data.trades;try{calc();save();alert("Yedek yüklendi.")}catch(err){trades=old;alert(err.message)}}catch{alert("Yedek dosyası okunamadı.")}};
-document.getElementById("clear").onclick=()=>{if(confirm("Tüm işlem kayıtlarını kalıcı olarak silmek istiyor musun?")){trades=[];save()}};
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(console.warn));render();
-</script></body></html>+Math.round(Number(x.volume24hUsd)).toLocaleString("en-US")+'</small><div><small>'+escapeText(x.reason)+'</small></div></div>').join(""):'Henüz uygun coin bulunmadı veya ilk tarama bekleniyor.');
- }catch(e){el.textContent="Sinyal verileri alınamadı. İnternet bağlantını kontrol edip yeniden dene."}
- finally{btn.disabled=false}
+const safe=v=>String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function calculate(items=trades){
+ const holdings={};let realized=0;
+ for(const t of items){
+  const key=t.exchange+":"+t.symbol;
+  const h=holdings[key]||(holdings[key]={qty:0,cost:0});
+  const qty=Number(t.quantity),price=Number(t.price),fee=Number(t.fee||0);
+  if(!(qty>0)||!(price>0)||fee<0)throw Error("Geçersiz işlem");
+  if(t.side==="BUY"){h.qty+=qty;h.cost+=qty*price+fee;}
+  else if(t.side==="SELL"){
+   if(qty>h.qty+1e-9)throw Error("Satış adedi mevcut bakiyeyi aşıyor: "+key);
+   const avg=h.qty?h.cost/h.qty:0;
+   realized+=qty*price-fee-qty*avg;
+   h.qty-=qty;h.cost-=qty*avg;
+   if(h.qty<1e-9){h.qty=0;h.cost=0;}
+  }
+ }
+ return {holdings,realized};
 }
-document.getElementById("refreshSignals").onclick=loadSignals;
-setInterval(()=>{if(!document.hidden)loadSignals()},300000);
+function render(){
+ const d=calculate();
+ const active=Object.entries(d.holdings).filter(([key,h])=>h.qty>0);
+ byId("total").textContent=money(active.reduce((sum,[key,h])=>sum+h.cost,0));
+ byId("realized").textContent=money(d.realized);
+ byId("realized").className=d.realized>=0?"green":"red";
+ byId("holdings").innerHTML=active.length?active.map(([key,h])=>'<div class="row"><div><b>'+safe(key)+'</b><div><small>'+h.qty.toLocaleString("en-US",{maximumFractionDigits:8})+' adet · Ort. '+money(h.cost/h.qty)+'</small></div></div><b>'+money(h.cost)+'</b></div>').join(""):"Henüz açık pozisyon yok.";
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(trades));render();}
+document.querySelectorAll("nav button").forEach(button=>{
+ button.addEventListener("click",()=>{
+  document.querySelectorAll("section").forEach(section=>section.classList.toggle("hidden",section.id!==button.dataset.tab));
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b===button));
+  if(button.dataset.tab==="signals")loadSignals();
+ });
+});
+byId("tradeForm").addEventListener("submit",event=>{
+ event.preventDefault();
+ const t={side:byId("side").value,exchange:byId("exchange").value,symbol:byId("symbol").value.trim().toUpperCase(),quantity:Number(byId("quantity").value),price:Number(byId("price").value),fee:Number(byId("fee").value||0),date:new Date().toISOString()};
+ if(!/^[A-Z0-9_-]{2,20}$/.test(t.symbol)||!(t.quantity>0)||!(t.price>0)||t.fee<0){alert("Geçerli işlem bilgilerini gir.");return;}
+ try{calculate([...trades,t]);trades.push(t);save();event.target.reset();byId("fee").value="0";alert("İşlem kaydedildi.");}
+ catch(e){alert(e.message);}
+});
+byId("export").addEventListener("click",()=>{
+ const blob=new Blob([JSON.stringify({version:1,trades},null,2)],{type:"application/json"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="kripto-radar-yedek.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+});
+byId("import").addEventListener("change",async event=>{
+ try{
+  const file=event.target.files[0];if(!file)return;
+  const data=JSON.parse(await file.text());if(!Array.isArray(data.trades))throw Error("Geçersiz dosya");
+  calculate(data.trades);
+  if(confirm("Mevcut kayıtların yerine yedek yüklensin mi?")){trades=data.trades;save();alert("Yedek yüklendi.");}
+ }catch(e){alert("Yedek yüklenemedi: "+e.message);}
+});
+byId("clear").addEventListener("click",()=>{if(confirm("Tüm işlem kayıtlarını kalıcı olarak silmek istiyor musun?")){trades=[];save();}});
+async function loadSignals(){
+ const el=byId("signalList"),button=byId("refreshSignals");button.disabled=true;
+ try{
+  const response=await fetch("./signals.json?t="+Date.now(),{cache:"no-store"});
+  if(!response.ok)throw Error("HTTP "+response.status);
+  const data=await response.json();
+  const date=data.updatedAt?new Date(data.updatedAt):null;
+  byId("scanTime").textContent=date&&!isNaN(date.getTime())?date.toLocaleString("tr-TR"):"İlk tarama bekleniyor";
+  byId("scanSources").textContent=Object.entries(data.sources||{}).map(([name,status])=>name+": "+(status.ok?"✓":"Hata")).join(" · ")||"Bekleniyor";
+  const age=date?(Date.now()-date.getTime())/3600000:null;
+  const rows=Array.isArray(data.signals)?data.signals:[];
+  const warning=age!==null&&age>2?'<p class="warn">Dikkat: Son veri 2 saatten eski.</p>':"";
+  const cards=rows.slice(0,30).map(item=>{
+   const price=Number(item.price),change=Number(item.change24h),volume=Number(item.volume24hUsd);
+   return '<div style="padding:12px 0;border-bottom:1px solid #314159"><div class="row"><strong>'+safe(item.symbol)+'</strong><span class="pill">'+safe(item.exchange)+'</span></div><div class="'+(item.status==="Koşullu kırılım adayı"?"green":"muted")+'">'+safe(item.status)+'</div><small>Fiyat: $'+(Number.isFinite(price)?price.toPrecision(6):"—")+' · 24s: %'+(Number.isFinite(change)?change.toFixed(2):"—")+' · Hacim: $'+(Number.isFinite(volume)?Math.round(volume).toLocaleString("en-US"):"—")+'</small><div><small>'+safe(item.reason||"")+'</small></div></div>';
+  }).join("");
+  el.innerHTML=warning+(cards||"Henüz uygun coin bulunmadı veya ilk tarama bekleniyor.");
+ }catch(e){el.textContent="Sinyal verileri alınamadı. İnternet bağlantını kontrol edip yeniden dene.";}
+ finally{button.disabled=false;}
+}
+byId("refreshSignals").addEventListener("click",loadSignals);
+setInterval(()=>{if(!document.hidden)loadSignals();},300000);
+try{render();}catch(e){byId("holdings").textContent="İşlem kayıtları okunamadı; yedekten geri yüklemeyi deneyin.";}
 loadSignals();
-document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("section").forEach(s=>s.classList.toggle("hidden",s.id!==b.dataset.tab));document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x===b))});
-document.getElementById("tradeForm").onsubmit=e=>{e.preventDefault();let t={side:side.value,exchange:exchange.value,symbol:symbol.value.trim().toUpperCase(),quantity:Number(quantity.value),price:Number(price.value),fee:Number(fee.value),date:new Date().toISOString()};if(!/^[A-Z0-9_-]{2,20}$/.test(t.symbol)||!(t.quantity>0)||!(t.price>0)||t.fee<0)return alert("Geçerli işlem bilgilerini gir.");try{let old=trades;trades=[...trades,t];calc();save();e.target.reset();fee.value="0";alert("İşlem kaydedildi.")}catch(err){trades=trades.slice(0,-1);alert(err.message)}};
-document.getElementById("export").onclick=()=>{let blob=new Blob([JSON.stringify({version:1,trades},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="kripto-radar-yedek.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
-document.getElementById("import").onchange=async e=>{try{let data=JSON.parse(await e.target.files[0].text());if(!Array.isArray(data.trades)||!confirm("Mevcut kayıtların yerine yedek yüklensin mi?"))return;let old=trades;trades=data.trades;try{calc();save();alert("Yedek yüklendi.")}catch(err){trades=old;alert(err.message)}}catch{alert("Yedek dosyası okunamadı.")}};
-document.getElementById("clear").onclick=()=>{if(confirm("Tüm işlem kayıtlarını kalıcı olarak silmek istiyor musun?")){trades=[];save()}};
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(console.warn));render();
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+
 </script></body></html>
