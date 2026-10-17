@@ -5,9 +5,9 @@
 <section id="portfolio"><div class="card"><small>Toplam maliyet (USD)</small><div class="kpi" id="total">—</div><div class="row"><span>Gerçekleşmiş kâr/zarar</span><strong id="realized">—</strong></div></div><h2>Portföyüm</h2><div id="holdings" class="card">Henüz işlem yok.</div><small class="muted">Piyasa fiyatı otomatik alınmaz. Gösterilen değerler işlem maliyetine dayanır.</small></section>
 <section id="trade" class="hidden"><h2>İşlem ekle</h2><div class="card"><form id="tradeForm"><label>İşlem türü</label><select id="side"><option value="BUY">AL</option><option value="SELL">SAT</option></select><label>Borsa</label><select id="exchange"><option>Binance</option><option>Binance TR</option><option>Gate.io</option><option>Diğer</option></select><label>Coin sembolü</label><input id="symbol" placeholder="Örn. VET" maxlength="20" required><label>Adet</label><input id="quantity" type="number" min="0.00000001" step="any" required><label>Birim fiyat (USD/USDT)</label><input id="price" type="number" min="0.00000000001" step="any" required><label>İşlem ücreti (USD)</label><input id="fee" type="number" min="0" step="any" value="0"><button class="primary">İşlemi kaydet</button></form></div><small>TRY işlemleri için önce o andaki USD karşılığını hesaplayarak gir.</small></section>
 <section id="signals" class="hidden"><h2>Kripto Fırsat Radarı</h2><div class="card"><div class="row"><span>Son tarama</span><strong id="scanTime">Kontrol ediliyor…</strong></div><div class="row"><span>Kaynaklar</span><strong id="scanSources">—</strong></div><p><small>Binance, Binance TR ve Gate.io taramaları yaklaşık 10 dakikada bir planlanır. CoinMarketCap doğrulaması erişilebildiğinde gösterilir. Ekran açıkken 5 dakikada bir sonuçlar kontrol edilir.</small></p><button class="primary" id="refreshSignals" type="button">Şimdi kontrol et</button></div><div id="signalList" class="card">Veriler yükleniyor…</div><p class="warn">İzleme listesi AL önerisi değildir. Koşullu adaylar da kesin sinyal değildir. İşlemler otomatik yapılmaz.</p></section>
-<section id="notifications" class="hidden"><h2>Bildirimler</h2><div class="card"><p><small>Radarın dikkat çekici bulduğu coinler burada listelenir. Bildirimler uygulama açıldığında veya veriler yenilendiğinde güncellenir; telefona anlık uyarı gönderilmez.</small></p><div id="notificationList">Kontrol ediliyor…</div></div></section>
+<section id="notifications" class="hidden"><h2>AL / SAT Bildirimleri</h2><div class="card"><p><small>AL: yükseliş hareketi izleme uyarısı. SAT: düşüş riski uyarısı. Kesin işlem tavsiyesi değildir. Geçmiş, bu cihazda uygulamanın gördüğü uyarılardan oluşur; telefona anlık bildirim gönderilmez.</small></p><h3>Güncel uyarılar</h3><div id="notificationList">Kontrol ediliyor…</div><h3>Geçmiş bildirimler</h3><div id="notificationHistory">Henüz kaydedilmiş bildirim yok.</div></div></section>
 <section id="backup" class="hidden"><h2>Veri yedekleme</h2><div class="card"><p>İşlemler yalnızca bu cihazdaki tarayıcıda saklanır. Telefonu değiştirmeden veya tarayıcı verilerini silmeden önce yedek al.</p><button class="primary" id="export">JSON yedeği indir</button><br><br><label>Yedeği geri yükle</label><input type="file" id="import" accept="application/json"><button id="clear" style="color:#ff8891;background:none;border:0;margin-top:20px">Tüm işlemleri sil</button></div></section>
-<nav><button data-tab="portfolio" class="active">◫<br>Portföy</button><button data-tab="trade">＋<br>İşlem</button><button data-tab="signals">◎<br>Sinyaller</button><button data-tab="notifications">♧<br>Bildirimler</button><button data-tab="backup">⇩<br>Yedek</button></nav>
+<nav><button data-tab="portfolio" class="active">◫<br>Portföy</button><button data-tab="trade">＋<br>İşlem</button><button data-tab="signals">◎<br>Sinyaller</button><button data-tab="backup">⇩<br>Yedek</button><button data-tab="notifications">♧<br>AL/SAT</button></nav>
 <script>
 
 const KEY="kripto-radar-trades-v1";
@@ -82,18 +82,43 @@ async function loadSignals(){
   const age=date?(Date.now()-date.getTime())/3600000:null;
   const rows=Array.isArray(data.signals)?data.signals:[];
   const notice=byId("notificationList");
-  const interesting=rows.filter(item=>item.status==="Koşullu kırılım adayı");
-  const stale=age!==null&&age>2;
-  if(stale){
-   notice.innerHTML='<p class="warn">Son tarama eski. Yeni uyarılar güvenilir olmayabilir.</p>';
-  }else if(!interesting.length){
-   notice.innerHTML='<p>Şu anda güçlü hareket işareti veren coin bulunamadı.</p><small>Bu normaldir. Sistem yeni taramalarda tekrar kontrol eder.</small>';
-  }else{
-   notice.innerHTML=interesting.slice(0,30).map(item=>{
-    const pct=Number(item.change24h);
-    return '<div style="padding:12px 0;border-bottom:1px solid #314159"><div class="row"><strong>'+safe(item.baseAsset||item.symbol)+'</strong><span class="pill">'+safe(item.exchange)+'</span></div><div class="green"><strong>Dikkat çekiyor</strong></div><small>Son 24 saat: '+(Number.isFinite(pct)?(pct>0?"+":"")+pct.toFixed(2)+"%":"Bilinmiyor")+'</small><div>Fiyat ve işlem hareketinde belirgin artış var. Yükseliş kesin değil.</div></div>';
-   }).join("");
+  const historyBox=byId("notificationHistory");
+  const fresh=date&&!isNaN(date.getTime())&&age!==null&&age>=-0.25&&age<=2;
+  const alerts=rows.filter(item=>item.alertType==="AL"||item.alertType==="SAT"||
+    (item.status==="Koşullu kırılım adayı"&&!item.alertType));
+  const alertType=item=>item.alertType==="SAT"?"SAT":"AL";
+  const alertReason=item=>alertType(item)==="SAT"?
+    "Düşüş riski tespit edildi; satman gerektiği anlamına gelmez.":
+    "Yükseliş hareketi tespit edildi; alman gerektiği anlamına gelmez.";
+  const alertCard=(item,when)=>'<div style="padding:12px 0;border-bottom:1px solid #314159">'+
+    '<div class="row"><strong>'+safe(item.baseAsset||item.symbol)+'</strong><span class="pill">'+safe(item.exchange)+'</span></div>'+
+    '<strong class="'+(alertType(item)==="AL"?"green":"red")+'">'+alertType(item)+' izleme uyarısı</strong>'+
+    '<div><small>'+safe(when)+'</small></div><div>'+alertReason(item)+'</div></div>';
+  notice.innerHTML=!fresh?'<p class="warn">Son tarama güncel değil; yeni uyarı gösterilmiyor.</p>':
+    alerts.length?alerts.slice(0,30).map(item=>alertCard(item,date.toLocaleString("tr-TR"))).join(""):
+    '<p>Şu anda yeni AL/SAT uyarısı yok.</p>';
+  const HISTORY_KEY="kripto-radar-alert-history-v1";
+  let history=[];
+  try{const saved=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");if(Array.isArray(saved))history=saved;}catch(e){}
+  if(fresh&&alerts.length){
+    const stamp=data.updatedAt;
+    const seen=new Set(history.map(item=>item.key));
+    let changed=false;
+    for(const item of alerts){
+      const key=[stamp,item.exchange,item.symbol,alertType(item)].join("|");
+      if(seen.has(key))continue;
+      history.unshift({key,exchange:item.exchange,symbol:item.symbol,baseAsset:item.baseAsset,
+        alertType:alertType(item),time:stamp});
+      seen.add(key);changed=true;
+    }
+    if(changed){
+      history=history.slice(0,200);
+      try{localStorage.setItem(HISTORY_KEY,JSON.stringify(history));}catch(e){}
+    }
   }
+  historyBox.innerHTML=history.length?history.slice(0,100).map(item=>
+    alertCard(item,new Date(item.time).toLocaleString("tr-TR"))).join(""):
+    '<p>Henüz kayıt yok. Uygulama yeni uyarılar gördükçe burada saklayacak.</p>';
   const warning=age!==null&&age>2?'<p class="warn">Dikkat: Son veri 2 saatten eski.</p>':"";
   const cards=rows.slice(0,60).map(item=>{
    const price=Number(item.price),change=Number(item.change24h),volume=Number(item.volume24hUsd);
