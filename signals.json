@@ -1,6 +1,76 @@
 {
-  "updatedAt": null,
-  "sources": {},
-  "signals": [],
-  "disclaimer": "İlk saatlik tarama bekleniyor. Veriler yatırım tavsiyesi değildir."
+  "updatedAt": "2026-10-17T22:49:16+00:00",
+  "sources": {
+    "Binance": {
+      "ok": false,
+      "error": "Veri alınamadı"
+    },
+    "Gate.io": {
+      "ok": true,
+      "count": 6
+    }
+  },
+  "signals": [
+    {
+      "exchange": "Gate.io",
+      "symbol": "ZEUSUSDT",
+      "price": 0.009428,
+      "change24h": 9.72,
+      "volume24hUsd": 4629203,
+      "volumeRatio": null,
+      "status": "İzleme listesi",
+      "reason": "Düşük fiyat ve yüksek 24 saatlik işlem hacmi; kırılım doğrulanmadı"
+    },
+    {
+      "exchange": "Gate.io",
+      "symbol": "PEPEUSDT",
+      "price": 3.862e-06,
+      "change24h": -4.59,
+      "volume24hUsd": 3489648,
+      "volumeRatio": null,
+      "status": "İzleme listesi",
+      "reason": "Düşük fiyat ve yüksek 24 saatlik işlem hacmi; kırılım doğrulanmadı"
+    },
+    {
+      "exchange": "Gate.io",
+      "symbol": "PUMPUSDT",
+      "price": 0.0043679,
+      "change24h": -6.33,
+      "volume24hUsd": 2665508,
+      "volumeRatio": null,
+      "status": "İzleme listesi",
+      "reason": "Düşük fiyat ve yüksek 24 saatlik işlem hacmi; kırılım doğrulanmadı"
+    },
+    {
+      "exchange": "Gate.io",
+      "symbol": "BTTUSDT",
+      "price": 3.557e-07,
+      "change24h": 0.05,
+      "volume24hUsd": 2114353,
+      "volumeRatio": null,
+      "status": "İzleme listesi",
+      "reason": "Düşük fiyat ve yüksek 24 saatlik işlem hacmi; kırılım doğrulanmadı"
+    },
+    {
+      "exchange": "Gate.io",
+      "symbol": "ALTUSDT",
+      "price": 0.009227,
+      "change24h": 11.82,
+      "volume24hUsd": 1710211,
+      "volumeRatio": null,
+      "status": "İzleme listesi",
+      "reason": "Düşük fiyat ve yüksek 24 saatlik işlem hacmi; kırılım doğrulanmadı"
+    },
+    {
+      "exchange": "Gate.io",
+      "symbol": "SOL5SUSDT",
+      "price": 0.008422,
+      "change24h": 5.88,
+      "volume24hUsd": 1199386,
+      "volumeRatio": null,
+      "status": "İzleme listesi",
+      "reason": "Düşük fiyat ve yüksek 24 saatlik işlem hacmi; kırılım doğrulanmadı"
+    }
+  ],
+  "disclaimer": "Bu tarama yatırım tavsiyesi veya kesin AL/SAT sinyali değildir. İşlemler otomatik yapılmaz."
 }
