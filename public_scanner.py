@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Ten-minute public-market radar; no trading, no secrets, no invented exchange prices."""
-import datetime,json,pathlib,urllib.request,urllib.parse,statistics,re,os
+import datetime,json,pathlib,urllib.request,urllib.parse,statistics,re
 ROOT=pathlib.Path(__file__).resolve().parent
 NOW=datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
 BAD=re.compile(r"(?:[235][LS]|BULL|BEAR|UP|DOWN)$",re.I)
@@ -56,29 +56,38 @@ def scan_gate():
   if 0<p<.01 and v>=1000000 and -12<c<18:items.append(make("Gate.io",pairs[sym],"USDT",p,c,v,"Gate.io"))
  return sorted(items,key=lambda x:x["volume24hUsd"],reverse=True)
 def scan_binance_tr():
- """Official symbol catalog. TRY pairs require verified USD price before inclusion."""
+ """Scan official Binance TR symbol catalog; never infer TRY USD values."""
  data=api("https://www.binance.tr/open/v1/common/symbols")
- if data.get("code") not in (0,"0"):raise RuntimeError("Binance TR symbol API: "+str(data.get("msg")))
- pairs=data.get("data",{}).get("list",[])
- if not isinstance(pairs,list):raise ValueError("Binance TR symbols list invalid")
- usdt=[p for p in pairs if p.get("quoteAsset")=="USDT" and valid(p.get("baseAsset"))]
- try:
-  tick=api("https://api.binance.me/api/v3/ticker/24hr")
-  if not isinstance(tick,list):raise ValueError("ticker list invalid")
- except Exception as e:
-  return [],{"pairsFound":len(pairs),"usdtPairs":len(usdt),"note":"Parite listesi alındı; Binance TR fiyat/hacim API doğrulanamadı: "+repr(e)[:120]}
- allowed={p["baseAsset"]+"USDT":p["baseAsset"] for p in usdt if p.get("type")==1}
+ if data.get("code") not in (0,"0"):raise RuntimeError("Binance TR catalog rejected: "+str(data.get("msg")))
+ payload=data.get("data") or {}
+ pairs=payload.get("list") if isinstance(payload,dict) else None
+ if not isinstance(pairs,list) or not pairs:raise ValueError("Binance TR symbol catalog missing or empty")
+ usdt={}
+ for p in pairs:
+  raw=str(p.get("symbol",""))
+  base=p.get("baseAsset") or (raw.split("_")[0] if "_" in raw else None)
+  quote=p.get("quoteAsset") or (raw.split("_")[1] if "_" in raw else None)
+  if quote=="USDT" and valid(base) and str(p.get("type",1))=="1":
+   usdt[raw.replace("_","")]=base
+ if not usdt:return [],{"pairsFound":len(pairs),"usdtPairs":0,"note":"Binance TR katalogunda doğrulanmış USDT paritesi yok"}
+ tick=api("https://api.binance.me/api/v3/ticker/24hr")
+ if isinstance(tick,dict):
+  if tick.get("code") not in (None,0,"0"):raise RuntimeError("Binance TR ticker rejected: "+str(tick.get("msg")))
+  tick=tick.get("data",tick)
+  if isinstance(tick,dict):tick=tick.get("list",[])
+ if not isinstance(tick,list):raise ValueError("Binance TR ticker format invalid")
  out=[]
  for t in tick:
-  sym=t.get("symbol")
-  if sym not in allowed:continue
-  try:p=float(t["lastPrice"]);v=float(t["quoteVolume"]);c=float(t["priceChangePercent"])
-  except (KeyError,ValueError,TypeError):continue
-  if 0<p<.01 and v>=1000000 and -12<c<18:out.append(make("Binance TR",allowed[sym],"USDT",p,c,v,"Binance TR API"))
- return out,{"pairsFound":len(pairs),"usdtPairs":len(usdt),"note":"Yalnızca resmî listede type=1 olarak doğrulanan USDT pariteleri fiyatlandı; TRY pariteleri USD dönüşümü doğrulanmadan dışarıda"}
+  sym=str(t.get("symbol","")).replace("_","")
+  if sym not in usdt:continue
+  try:p=float(t["lastPrice"]);v=float(t["quoteVolume"]);change=float(t["priceChangePercent"])
+  except (KeyError,TypeError,ValueError):continue
+  if 0<p<.01 and v>=1000000 and -12<change<18:
+   out.append(make("Binance TR",usdt[sym],"USDT",p,change,v,"Binance TR"))
+ return sorted(out,key=lambda x:x["volume24hUsd"],reverse=True),{"pairsFound":len(pairs),"usdtPairs":len(usdt),"note":"TRY pariteleri doğrulanmış USD dönüşümü olmadan dahil edilmez"}
 def cmc_lookup():
  """Optional public CoinMarketCap market-cap sample; NOT a listing/identity authority."""
- url="https://pro-api.coinmarketcap.com/public-api/v3/cryptocurrency/listings/latest?"+urllib.parse.urlencode({"start":1,"limit":500,"convert":"USD"})
+ url="https://pro-api.coinmarketcap.com/public-api/v3/cryptocurrency/listings/latest?"+urllib.parse.urlencode({"start":1,"limit":1500,"convert":"USD"})
  data=api(url)
  records=data.get("data",[])
  if isinstance(records,dict):records=records.get("cryptoCurrencyList",records.get("list",[]))
