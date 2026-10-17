@@ -18,6 +18,20 @@ class RadarTests(unittest.TestCase):
  def test_binance_tr_catalog_failure_is_visible(self):
   with patch.object(radar,"api",side_effect=RuntimeError("test failure")):
    with self.assertRaises(RuntimeError):radar.scan_binance_tr()
+ def test_binance_tr_symbol_underscore_and_wrapped_ticker(self):
+  catalog={"code":0,"data":{"list":[{"symbol":"PEPE_USDT","type":1}]}}
+  ticker={"code":0,"data":{"list":[{"symbol":"PEPEUSDT","lastPrice":"0.00001","quoteVolume":"2000000","priceChangePercent":"4"}]}}
+  with patch.object(radar,"api",side_effect=[catalog,ticker]):
+   result,meta=radar.scan_binance_tr()
+  self.assertEqual(meta["usdtPairs"],1)
+  self.assertEqual(result[0]["exchange"],"Binance TR")
+  self.assertEqual(result[0]["symbol"],"PEPEUSDT")
+ def test_binance_tr_does_not_assume_try_is_usd(self):
+  catalog={"code":0,"data":{"list":[{"symbol":"PEPE_TRY","type":1}]}}
+  with patch.object(radar,"api",return_value=catalog):
+   result,meta=radar.scan_binance_tr()
+  self.assertEqual(result,[])
+  self.assertEqual(meta["usdtPairs"],0)
  def test_binance_filters_all_pairs(self):
   info={"symbols":[{"symbol":"PEPEUSDT","baseAsset":"PEPE","quoteAsset":"USDT","status":"TRADING","isSpotTradingAllowed":True},{"symbol":"BTCUSDT","baseAsset":"BTC","quoteAsset":"USDT","status":"TRADING","isSpotTradingAllowed":True}]}
   tick=[{"symbol":"PEPEUSDT","lastPrice":"0.00001","quoteVolume":"2000000","priceChangePercent":"5"},{"symbol":"BTCUSDT","lastPrice":"100000","quoteVolume":"5000000","priceChangePercent":"2"}]
