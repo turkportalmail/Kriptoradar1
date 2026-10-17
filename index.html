@@ -83,19 +83,10 @@ async function loadSignals(){
   const warning=age!==null&&age>2?'<p class="warn">Dikkat: Son veri 2 saatten eski.</p>':"";
   const cards=rows.slice(0,60).map(item=>{
    const price=Number(item.price),change=Number(item.change24h),volume=Number(item.volume24hUsd);
-   return '<div style="padding:12px 0;border-bottom:1px solid #314159"><div class="row"><strong>'+safe(item.symbol)+'</strong><span class="pill">'+safe(item.exchange)+'</span></div><div class="'+(item.status==="Koşullu kırılım adayı"?"green":"muted")+'">'+safe(item.status)+'</div><small>Fiyat: $'+(Number.isFinite(price)?price.toPrecision(6):"—")+' · 24s: %'+(Number.isFinite(change)?change.toFixed(2):"—")+' · Hacim: $'+(Number.isFinite(volume)?Math.round(volume).toLocaleString("en-US"):"—")+'</small><div><small>'+safe(item.reason||"")+'</small></div>'+(item.cmc&&item.cmc.match==="symbol_only_unverified"?'<div><small>CMC (sembol eşleşmesi, doğrulanmadı): '+safe(item.cmc.name||"—")+' · Piyasa değeri: '+(Number.isFinite(Number(item.cmc.marketCapUsd))&&item.cmc.marketCapUsd!==null?'
-  }).join("");
-  el.innerHTML=warning+(cards||"Henüz uygun coin bulunmadı veya ilk tarama bekleniyor.");
- }catch(e){el.textContent="Sinyal verileri alınamadı. İnternet bağlantını kontrol edip yeniden dene.";}
- finally{button.disabled=false;}
-}
-byId("refreshSignals").addEventListener("click",loadSignals);
-setInterval(()=>{if(!document.hidden)loadSignals();},300000);
-try{render();}catch(e){byId("holdings").textContent="İşlem kayıtları okunamadı; yedekten geri yüklemeyi deneyin.";}
-loadSignals();
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
-
-</script></body></html>+Math.round(Number(item.cmc.marketCapUsd)).toLocaleString("en-US"):"—")+'</small></div>':"")+'</div>';
+   const cmc=item.cmc&&item.cmc.match==="symbol_only_unverified"?
+     '<div><small>CoinMarketCap (sembol eşleşmesi, kimlik doğrulanmadı): '+safe(item.cmc.name||"—")+
+     ' · Piyasa değeri: '+(item.cmc.marketCapUsd!==null&&Number.isFinite(Number(item.cmc.marketCapUsd))?Math.round(Number(item.cmc.marketCapUsd)).toLocaleString("en-US")+" USD":"—")+'</small></div>':"";
+   return '<div style="padding:12px 0;border-bottom:1px solid #314159"><div class="row"><strong>'+safe(item.symbol)+'</strong><span class="pill">'+safe(item.exchange)+'</span></div><div class="'+(item.status==="Koşullu kırılım adayı"?"green":"muted")+'">'+safe(item.status)+'</div><small>Fiyat: '+(Number.isFinite(price)?price.toPrecision(6):"—")+' USD · 24s: %'+(Number.isFinite(change)?change.toFixed(2):"—")+' · Hacim: '+(Number.isFinite(volume)?Math.round(volume).toLocaleString("en-US"):"—")+' USD</small><div><small>'+safe(item.reason||"")+'</small></div>'+cmc+'</div>';
   }).join("");
   el.innerHTML=warning+(cards||"Henüz uygun coin bulunmadı veya ilk tarama bekleniyor.");
  }catch(e){el.textContent="Sinyal verileri alınamadı. İnternet bağlantını kontrol edip yeniden dene.";}
