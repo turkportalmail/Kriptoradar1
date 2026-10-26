@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-10-26T13:44:22+00:00",
+  "updatedAt": "2026-10-26T15:22:22+00:00",
   "sources": {
     "Binance": {
       "ok": true,
-      "count": 20
+      "count": 19
     },
     "Binance TR": {
       "ok": false,
@@ -26,15 +26,15 @@
       "baseAsset": "PEPE",
       "quoteAsset": "USDT",
       "price": 4.36e-06,
-      "change24h": -1.58,
-      "volume24hUsd": 24944939,
-      "volumeRatio": 0.56,
+      "change24h": -0.68,
+      "volume24hUsd": 24776266,
+      "volumeRatio": 0.82,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": {
         "name": "Pepe",
-        "marketCapUsd": 1799612378.0369375,
+        "marketCapUsd": 1803434031.8824468,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -44,16 +44,16 @@
       "symbol": "PEPEUSDT",
       "baseAsset": "PEPE",
       "quoteAsset": "USDT",
-      "price": 4.359e-06,
-      "change24h": -1.58,
-      "volume24hUsd": 15192531,
+      "price": 4.369e-06,
+      "change24h": -0.34,
+      "volume24hUsd": 14934742,
       "volumeRatio": null,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Gate.io",
       "cmc": {
         "name": "Pepe",
-        "marketCapUsd": 1799612378.0369375,
+        "marketCapUsd": 1803434031.8824468,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -63,16 +63,16 @@
       "symbol": "PUMPUSDT",
       "baseAsset": "PUMP",
       "quoteAsset": "USDT",
-      "price": 0.004269,
-      "change24h": 2.1,
-      "volume24hUsd": 12014019,
-      "volumeRatio": 0.87,
+      "price": 0.004365,
+      "change24h": 2.58,
+      "volume24hUsd": 13641383,
+      "volumeRatio": 2.14,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": {
         "name": "Pump.fun",
-        "marketCapUsd": 1971143086.9553354,
+        "marketCapUsd": 2014640469.4929242,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -82,16 +82,16 @@
       "symbol": "KATUSDT",
       "baseAsset": "KAT",
       "quoteAsset": "USDT",
-      "price": 0.00456,
-      "change24h": 13.72,
-      "volume24hUsd": 6314135,
+      "price": 0.00438,
+      "change24h": 9.77,
+      "volume24hUsd": 6941884,
       "volumeRatio": 1.45,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": {
         "name": "Katana",
-        "marketCapUsd": 15292200.220833508,
+        "marketCapUsd": 14679871.537107266,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -101,49 +101,49 @@
       "symbol": "BEAMXUSDT",
       "baseAsset": "BEAMX",
       "quoteAsset": "USDT",
-      "price": 0.003336,
-      "change24h": 13.74,
-      "volume24hUsd": 5536788,
-      "volumeRatio": 0.57,
+      "price": 0.003357,
+      "change24h": 15.56,
+      "volume24hUsd": 5736597,
+      "volumeRatio": 0.64,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": null
     },
     {
+      "exchange": "Binance",
+      "symbol": "REZUSDT",
+      "baseAsset": "REZ",
+      "quoteAsset": "USDT",
+      "price": 0.00451,
+      "change24h": -0.02,
+      "volume24hUsd": 4334570,
+      "volumeRatio": 0.47,
+      "status": "İzleme listesi",
+      "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
+      "priceSource": "Binance",
+      "cmc": {
+        "name": "Renzo",
+        "marketCapUsd": 40892185.39172051,
+        "rank": null,
+        "match": "symbol_only_unverified"
+      }
+    },
+    {
       "exchange": "Gate.io",
       "symbol": "XCNUSDT",
       "baseAsset": "XCN",
       "quoteAsset": "USDT",
-      "price": 0.004081,
-      "change24h": -0.04,
-      "volume24hUsd": 4874806,
+      "price": 0.004079,
+      "change24h": 0.96,
+      "volume24hUsd": 4020886,
       "volumeRatio": null,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Gate.io",
       "cmc": {
         "name": "Onyxcoin",
-        "marketCapUsd": 163754993.17811468,
-        "rank": null,
-        "match": "symbol_only_unverified"
-      }
-    },
-    {
-      "exchange": "Binance",
-      "symbol": "REZUSDT",
-      "baseAsset": "REZ",
-      "quoteAsset": "USDT",
-      "price": 0.004474,
-      "change24h": 1.47,
-      "volume24hUsd": 4468680,
-      "volumeRatio": 0.26,
-      "status": "İzleme listesi",
-      "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
-      "priceSource": "Binance",
-      "cmc": {
-        "name": "Renzo",
-        "marketCapUsd": 40856681.15548937,
+        "marketCapUsd": 163233833.7423367,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -153,16 +153,16 @@
       "symbol": "PENGUUSDT",
       "baseAsset": "PENGU",
       "quoteAsset": "USDT",
-      "price": 0.007508,
-      "change24h": 1.62,
-      "volume24hUsd": 3357121,
-      "volumeRatio": 0.54,
+      "price": 0.007605,
+      "change24h": 2.03,
+      "volume24hUsd": 3537686,
+      "volumeRatio": 1.62,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": {
         "name": "Pudgy Penguins",
-        "marketCapUsd": 472018715.5579499,
+        "marketCapUsd": 476792152.55289775,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -172,10 +172,10 @@
       "symbol": "ALTUSDT",
       "baseAsset": "ALT",
       "quoteAsset": "USDT",
-      "price": 0.00649,
-      "change24h": -1.52,
-      "volume24hUsd": 2847454,
-      "volumeRatio": 0.94,
+      "price": 0.00643,
+      "change24h": -2.72,
+      "volume24hUsd": 2762025,
+      "volumeRatio": 1.37,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
@@ -184,58 +184,20 @@
       }
     },
     {
-      "exchange": "Binance",
-      "symbol": "XECUSDT",
-      "baseAsset": "XEC",
-      "quoteAsset": "USDT",
-      "price": 7.07e-06,
-      "change24h": 5.37,
-      "volume24hUsd": 2497255,
-      "volumeRatio": 0.9,
-      "status": "İzleme listesi",
-      "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
-      "priceSource": "Binance",
-      "cmc": {
-        "name": "eCash",
-        "marketCapUsd": 142264711.28204945,
-        "rank": null,
-        "match": "symbol_only_unverified"
-      }
-    },
-    {
       "exchange": "Gate.io",
       "symbol": "PUMPUSDT",
       "baseAsset": "PUMP",
       "quoteAsset": "USDT",
-      "price": 0.0042756,
-      "change24h": 2.17,
-      "volume24hUsd": 2480226,
+      "price": 0.0043644,
+      "change24h": 2.59,
+      "volume24hUsd": 2739667,
       "volumeRatio": null,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Gate.io",
       "cmc": {
         "name": "Pump.fun",
-        "marketCapUsd": 1971143086.9553354,
-        "rank": null,
-        "match": "symbol_only_unverified"
-      }
-    },
-    {
-      "exchange": "Binance",
-      "symbol": "IOSTUSDT",
-      "baseAsset": "IOST",
-      "quoteAsset": "USDT",
-      "price": 0.000763,
-      "change24h": -2.05,
-      "volume24hUsd": 2397844,
-      "volumeRatio": 0.98,
-      "status": "İzleme listesi",
-      "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
-      "priceSource": "Binance",
-      "cmc": {
-        "name": "IOST",
-        "marketCapUsd": 27964415.31476826,
+        "marketCapUsd": 2014640469.4929242,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -245,16 +207,54 @@
       "symbol": "NOMUSDT",
       "baseAsset": "NOM",
       "quoteAsset": "USDT",
-      "price": 0.001695,
-      "change24h": 9.92,
-      "volume24hUsd": 2283851,
-      "volumeRatio": 4.62,
+      "price": 0.001655,
+      "change24h": 6.91,
+      "volume24hUsd": 2543057,
+      "volumeRatio": 1.3,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": {
         "name": "Nomina",
-        "marketCapUsd": 4925171.07908607,
+        "marketCapUsd": 4760739.213689296,
+        "rank": null,
+        "match": "symbol_only_unverified"
+      }
+    },
+    {
+      "exchange": "Binance",
+      "symbol": "XECUSDT",
+      "baseAsset": "XEC",
+      "quoteAsset": "USDT",
+      "price": 7.07e-06,
+      "change24h": 7.45,
+      "volume24hUsd": 2323979,
+      "volumeRatio": 1.11,
+      "status": "İzleme listesi",
+      "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
+      "priceSource": "Binance",
+      "cmc": {
+        "name": "eCash",
+        "marketCapUsd": 142178097.61268684,
+        "rank": null,
+        "match": "symbol_only_unverified"
+      }
+    },
+    {
+      "exchange": "Binance",
+      "symbol": "IOSTUSDT",
+      "baseAsset": "IOST",
+      "quoteAsset": "USDT",
+      "price": 0.000769,
+      "change24h": -0.65,
+      "volume24hUsd": 2171882,
+      "volumeRatio": 0.55,
+      "status": "İzleme listesi",
+      "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
+      "priceSource": "Binance",
+      "cmc": {
+        "name": "IOST",
+        "marketCapUsd": 28123583.897007942,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -264,49 +264,49 @@
       "symbol": "MITOUSDT",
       "baseAsset": "MITO",
       "quoteAsset": "USDT",
-      "price": 0.00851,
-      "change24h": -0.12,
-      "volume24hUsd": 2104982,
-      "volumeRatio": 0.6,
+      "price": 0.00862,
+      "change24h": 1.05,
+      "volume24hUsd": 2148536,
+      "volumeRatio": 0.56,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": null
     },
     {
+      "exchange": "Binance",
+      "symbol": "SHIBUSDT",
+      "baseAsset": "SHIB",
+      "quoteAsset": "USDT",
+      "price": 4.9e-06,
+      "change24h": 0.62,
+      "volume24hUsd": 2046371,
+      "volumeRatio": 1.41,
+      "status": "İzleme listesi",
+      "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
+      "priceSource": "Binance",
+      "cmc": {
+        "name": "Shiba Inu",
+        "marketCapUsd": 2881788989.2190356,
+        "rank": null,
+        "match": "symbol_only_unverified"
+      }
+    },
+    {
       "exchange": "Gate.io",
       "symbol": "BTTUSDT",
       "baseAsset": "BTT",
       "quoteAsset": "USDT",
-      "price": 3.667e-07,
-      "change24h": -1.37,
-      "volume24hUsd": 2061140,
+      "price": 3.672e-07,
+      "change24h": -1.52,
+      "volume24hUsd": 2011805,
       "volumeRatio": null,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Gate.io",
       "cmc": {
         "name": "BitTorrent [New]",
-        "marketCapUsd": 354204693.1625449,
-        "rank": null,
-        "match": "symbol_only_unverified"
-      }
-    },
-    {
-      "exchange": "Binance",
-      "symbol": "SHIBUSDT",
-      "baseAsset": "SHIB",
-      "quoteAsset": "USDT",
-      "price": 4.84e-06,
-      "change24h": -0.62,
-      "volume24hUsd": 1897257,
-      "volumeRatio": 0.98,
-      "status": "İzleme listesi",
-      "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
-      "priceSource": "Binance",
-      "cmc": {
-        "name": "Shiba Inu",
-        "marketCapUsd": 2853591614.8344455,
+        "marketCapUsd": 353973771.93312377,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -316,35 +316,16 @@
       "symbol": "VETUSDT",
       "baseAsset": "VET",
       "quoteAsset": "USDT",
-      "price": 0.006581,
-      "change24h": -2.46,
-      "volume24hUsd": 1681116,
-      "volumeRatio": 0.24,
+      "price": 0.006662,
+      "change24h": -1.71,
+      "volume24hUsd": 1811539,
+      "volumeRatio": 2.42,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": {
         "name": "VeChain",
-        "marketCapUsd": 566755566.541409,
-        "rank": null,
-        "match": "symbol_only_unverified"
-      }
-    },
-    {
-      "exchange": "Gate.io",
-      "symbol": "RLSUSDT",
-      "baseAsset": "RLS",
-      "quoteAsset": "USDT",
-      "price": 0.002619,
-      "change24h": 15.78,
-      "volume24hUsd": 1610847,
-      "volumeRatio": null,
-      "status": "İzleme listesi",
-      "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
-      "priceSource": "Gate.io",
-      "cmc": {
-        "name": "Rayls",
-        "marketCapUsd": 4790378.9908632785,
+        "marketCapUsd": 571670133.1999807,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -354,16 +335,35 @@
       "symbol": "BONKUSDT",
       "baseAsset": "BONK",
       "quoteAsset": "USDT",
-      "price": 3e-06,
-      "change24h": -0.66,
-      "volume24hUsd": 1601331,
-      "volumeRatio": 0.63,
+      "price": 3.07e-06,
+      "change24h": 1.32,
+      "volume24hUsd": 1746865,
+      "volumeRatio": 1.55,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": {
         "name": "Bonk",
-        "marketCapUsd": 263529425.14458624,
+        "marketCapUsd": 268769597.29878366,
+        "rank": null,
+        "match": "symbol_only_unverified"
+      }
+    },
+    {
+      "exchange": "Gate.io",
+      "symbol": "RLSUSDT",
+      "baseAsset": "RLS",
+      "quoteAsset": "USDT",
+      "price": 0.002665,
+      "change24h": 8.59,
+      "volume24hUsd": 1623000,
+      "volumeRatio": null,
+      "status": "İzleme listesi",
+      "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
+      "priceSource": "Gate.io",
+      "cmc": {
+        "name": "Rayls",
+        "marketCapUsd": 4880733.512279481,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -373,16 +373,16 @@
       "symbol": "ANIMEUSDT",
       "baseAsset": "ANIME",
       "quoteAsset": "USDT",
-      "price": 0.00281,
-      "change24h": -2.77,
-      "volume24hUsd": 1444405,
-      "volumeRatio": 0.61,
+      "price": 0.00283,
+      "change24h": -2.75,
+      "volume24hUsd": 1399542,
+      "volumeRatio": 0.41,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": {
         "name": "Animecoin",
-        "marketCapUsd": 15607149.62619385,
+        "marketCapUsd": 15665475.004888918,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -392,35 +392,16 @@
       "symbol": "ZILUSDT",
       "baseAsset": "ZIL",
       "quoteAsset": "USDT",
-      "price": 0.001992,
-      "change24h": 3.27,
-      "volume24hUsd": 1300049,
-      "volumeRatio": 1.09,
+      "price": 0.002045,
+      "change24h": 6.18,
+      "volume24hUsd": 1249848,
+      "volumeRatio": 0.68,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": {
         "name": "Zilliqa",
-        "marketCapUsd": 40950133.97613896,
-        "rank": null,
-        "match": "symbol_only_unverified"
-      }
-    },
-    {
-      "exchange": "Binance",
-      "symbol": "WINUSDT",
-      "baseAsset": "WIN",
-      "quoteAsset": "USDT",
-      "price": 6.557e-05,
-      "change24h": 1.93,
-      "volume24hUsd": 1249858,
-      "volumeRatio": 0.45,
-      "status": "İzleme listesi",
-      "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
-      "priceSource": "Binance",
-      "cmc": {
-        "name": "WINkLink",
-        "marketCapUsd": 65046065.53268361,
+        "marketCapUsd": 41981356.57071316,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -430,16 +411,16 @@
       "symbol": "BOMEUSDT",
       "baseAsset": "BOME",
       "quoteAsset": "USDT",
-      "price": 0.0006264,
-      "change24h": 1.46,
-      "volume24hUsd": 1145445,
-      "volumeRatio": 0.36,
+      "price": 0.000634,
+      "change24h": 1.33,
+      "volume24hUsd": 1223900,
+      "volumeRatio": 0.89,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": {
         "name": "BOOK OF MEME",
-        "marketCapUsd": 43090728.41381587,
+        "marketCapUsd": 43667108.35327387,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -449,16 +430,16 @@
       "symbol": "LUNCUSDT",
       "baseAsset": "LUNC",
       "quoteAsset": "USDT",
-      "price": 4.44e-05,
-      "change24h": -1.4,
-      "volume24hUsd": 1109284,
-      "volumeRatio": null,
+      "price": 4.504e-05,
+      "change24h": 0.04,
+      "volume24hUsd": 1183457,
+      "volumeRatio": 1.11,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": {
         "name": "Terra Classic",
-        "marketCapUsd": 244666671.62973556,
+        "marketCapUsd": 247348554.43355957,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -468,16 +449,16 @@
       "symbol": "BIGTIMEUSDT",
       "baseAsset": "BIGTIME",
       "quoteAsset": "USDT",
-      "price": 0.00683,
-      "change24h": 0.74,
-      "volume24hUsd": 1101089,
+      "price": 0.00684,
+      "change24h": 0.89,
+      "volume24hUsd": 1109665,
       "volumeRatio": null,
       "status": "İzleme listesi",
       "reason": "Borsa verisi; koşullu teknik kırılım henüz doğrulanmadı",
       "priceSource": "Binance",
       "cmc": {
         "name": "Big Time",
-        "marketCapUsd": 19855571.614973933,
+        "marketCapUsd": 19763284.155005433,
         "rank": null,
         "match": "symbol_only_unverified"
       }
@@ -485,5 +466,5 @@
   ],
   "disclaimer": "İzleme listesi yatırım tavsiyesi değildir. CoinMarketCap sembol eşleşmesi kimlik doğrulaması sayılmaz.",
   "scanIntervalMinutes": 10,
-  "totalCandidates": 25
+  "totalCandidates": 24
 }
